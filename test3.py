@@ -10,7 +10,7 @@ class SplitScreen:
 
   max_row = 10
   screen = curses.initscr()
-  activeBox = 1
+  activeBox = 0
   leftHighlightedCursor = 0
   rightHighlightedCursor = 0
   oldWidth = 0
@@ -28,7 +28,6 @@ class SplitScreen:
     SplitScreen.highlightWindow = curses.color_pair( 1 )
     SplitScreen.normalText = curses.A_NORMAL
     SplitScreen.refresh()
-    SplitScreen.switchBox()
     SplitScreen.keyhandler()
 
 
@@ -41,7 +40,6 @@ class SplitScreen:
 
   def refresh():
       SplitScreen.getGeometry()
-
       SplitScreen.screen.clear()
       SplitScreen.screen.refresh()
       SplitScreen.leftBox = curses.newwin( SplitScreen.max_row + 20, SplitScreen.middleCol-1, 1, 1 )
@@ -75,9 +73,9 @@ class SplitScreen:
     i = 0
     for string in strings:
       if i == selected:
-        box.addstr(i+1, 3, "line " + str(i) + ": "+string + " " + str(SplitScreen.middleCol) + " " + str(SplitScreen.cols), SplitScreen.highlightText)
+        box.addstr(i+1, 3, "line " + str(i) + ": "+string, SplitScreen.highlightText)
       else:
-        box.addstr(i+1, 3, "line " + str(i) + ": "+string + " " + str(SplitScreen.middleCol), SplitScreen.normalText)
+        box.addstr(i+1, 3, "line " + str(i) + ": "+string, SplitScreen.normalText)
       i = i + 1
     box.refresh()
 
@@ -113,7 +111,7 @@ class SplitScreen:
           SplitScreen.switchBox()
 
         SplitScreen.refresh()
-        SplitScreen.screen.refresh()
+        #SplitScreen.screen.refresh()
         #SplitScreen.leftBox.refresh()
         #SplitScreen.rightBox.refresh()
         x = SplitScreen.screen.getch()
